@@ -11,6 +11,11 @@ import pessl
 import jimhickey
 import errorchecks
 import emailer
+import irrigator_manager
+import Write_HTML
+
+SOIL_1 = 24
+SOIL_2 = 25
 
 me = 'carrfieldstechnology@gmail.com'
 login = 'carrfieldstechnology@gmail.com'
@@ -29,11 +34,15 @@ if __name__ == "__main__":
     # weather_mat = jimhickey.get_weather()
 
 
-    if len(errors) == 1:
-        message = "No errors detected"
-    else:
-        for error in errors:
-            message = message + '{} \n'.format(error)
+    # if len(errors) == 1:
+    #     message = "No errors detected"
+    # else:
+    #     for error in errors:
+    #         message = message + '{} \n'.format(error)
 
-    emailer.sendemail(you, subject, message)
+    irrigator_manager.grapher(errorchecks.get_data(pessl_mat, SOIL_1))
+
+    html = Write_HTML.send_email(errors)
+
+    emailer.sendemail(you, subject, html)
 

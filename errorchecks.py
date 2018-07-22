@@ -47,7 +47,7 @@ def check_wind_data(wind_data, errors):
     wind_average = sum(wind_data)/len(wind_data)
 
     if(wind_average < 1): # If there has been no wind for the past day
-       errors.append('Wind sensor not working, could be obstructed, fallen over, or a faulty cable/sensor')
+        errors['Wind'] = True
 
 
 def check_rain_data(rain_data, wind_max, leafwet_data, errors):
@@ -64,17 +64,17 @@ def check_rain_data(rain_data, wind_max, leafwet_data, errors):
                 rain_max = get_max_data(rain_data)
 
                 if((wind_max['hour'] - 1) < rain_max['hour'] and rain_max['hour'] < (wind_max['hour'] + 1)):
-                    errors.append('Rain bucket possibly being tipped by the wind')
+                    errors['Rain'] = True
                 else: # The time in which the high winds occurred did not correspond with the recorded rain
-                    errors.append('Something might not be right with the rain bucket, not sure what')
+                    errors['Rain'] = True # But not sure what error is
 
             else: # No high winds were recorded, so must be the leaf wetness sensor
-                errors.append('Leaf wetness sensor paper might have karked it')
+                errors['Leaf Wetness'] = True
 
     else: # If the station thinks there hasn't been rain
         if(leafwet_sum > 1): # The leaves are wet - rain bucket could be blocked or maybe it was just dewy? Would need
                              # to compare against the forecast or another nearby station
-            errors.append('The rain bucket might be blocked, or there has been lots of dew')
+            errors['Rain'] = True
 
 
     # if (rain_total > 1): # If significant rainfall occurred, > 1mm
@@ -105,13 +105,14 @@ def check_solar_panel(solar_data, pv_data, errors):
     print(pv_factor)
 
     if(pv_factor < (1 - threshold) * pv_factor):
-        errors.append('Solar panel disconnected or dirty/blocked')
+        errors['Solar'] = True
 
 
 def error_checker(data):
     """Main function, takes a matrix of weather station data for the past 24hrs and does the corresponding error checks,
        returns an error struct"""
-    errors = ['Errors:']
+    errors = {'Connection': False, 'Battery': False, 'Solar': False, 'Rain': False, 'Leaf Wetness': False,
+              'Temp': False, 'GPS': False, 'Wind': False}
 
     time_data = get_data(data, TIME_COL)
     wind_data = get_data(data, WIND_COL)

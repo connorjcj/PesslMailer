@@ -1,0 +1,2 @@
+﻿Customer Name,Email Address,Subscription End,Station ID,GPS_Lat,GPS_Long,Connection,Battery,Solar Panel,Rain Bucket,Leaf Wetness,Temperature,Location,Eto,Forecast,Probe 1 Relv Depth,Probe 1 Sat,Soil Moisture Hold Cap 1,Probe 2 Relv Depth,Probe 2 Sat,Soil Moisture Hold Cap 2,Probe 3 Relv Depth,Probe 3 Sat,Soil Moisture Hold Cap 3,Probe 4 Relv Depth,Probe 4 Sat,Soil Moisture Hold Cap 4,Combine Ref
+Daniel Lovett,william.stewart-smith@carrfields.co.nz,1/01/2020,01204E68,-43.975514,171.78515,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,30,33%,150,,,,,,,,,,A
