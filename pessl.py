@@ -172,8 +172,6 @@ def append_to_matrix(old_matrix, new_matrix):
 def get_data(last_date = 0):
     readData = '/data/optimized/00204E80/hourly/from/' + str(last_date)
 
-    # print(readData)
-
     # Service/Route that you wish to call
     apiRoute = readData
 
@@ -196,7 +194,9 @@ def write_to_csv(matrix):
     file.close()
 
 ########################################################################################################################
-def pessl_data_handler(time_period='day'):
+def pessl_data_handler(customer_info, time_period='day'):
+    filename = "{}_{}".format(customer_info['customer_name'], customer_info['station_id'])
+
     file_exists = os.path.isfile(filename)
 
     if file_exists:
@@ -212,6 +212,7 @@ def pessl_data_handler(time_period='day'):
         print('whoops')
 
     sensor_data = data_parsed['data'] # Isolates the dictionary containing sensor data
+
     dates = data_parsed['dates']      # Isolates the dictionary containing the timestaps for each data point in data
 
     new_matrix = create_matrix(sensor_data, dates)

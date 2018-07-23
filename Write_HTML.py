@@ -192,7 +192,7 @@ gps_lat = "-43.975514"
 gps_lon = "171.785150"
 
 def send_email(sensor_trigger):
-    '''sensoir_trigger format: {'Connection': False, 'Battery': False, 'Solar': False, 'Rain': False,
+    '''sensor_trigger format: {'Connection': False, 'Battery': False, 'Solar': False, 'Rain': False,
     'Leaf Wetness': False, 'Temp': False, 'GPS': False}'''
 
     if (sensor_trigger['Connection'] == True):

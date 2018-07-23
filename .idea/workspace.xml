@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/errorchecks.py" line="33" />
+    <bookmark url="file://$PROJECT_DIR$/errorchecks.py" line="64" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2b7e5229-d63f-4ba9-9b0c-de1354925264" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/fieldclimatefetchV2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/fieldclimatefetchV2.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CustomerDatabase.csv" beforeDir="false" afterPath="$PROJECT_DIR$/CustomerDatabase.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Write_HTML.py" beforeDir="false" afterPath="$PROJECT_DIR$/Write_HTML.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/database_handler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/emailer.py" beforeDir="false" afterPath="$PROJECT_DIR$/emailer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/errorchecks.py" beforeDir="false" afterPath="$PROJECT_DIR$/errorchecks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irrigator_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/irrigator_manager.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/new_pessl.csv" beforeDir="false" afterPath="$PROJECT_DIR$/new_pessl.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pessl.py" beforeDir="false" afterPath="$PROJECT_DIR$/pessl.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,7 +24,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/fieldclimatefetchV2$weatherman.coverage" NAME="weatherman Coverage Results" MODIFIED="1531364682960" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/fieldclimatefetchV2$main.coverage" NAME="main Coverage Results" MODIFIED="1532299590488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/fieldclimatefetchV2$main.coverage" NAME="main Coverage Results" MODIFIED="1532322118178" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/fieldclimatefetchV2$jimhickey.coverage" NAME="jimhickey Coverage Results" MODIFIED="1531443350170" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/fieldclimatefetchV2$emailer.coverage" NAME="emailer Coverage Results" MODIFIED="1531428619696" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/fieldclimatefetchV2$Write_HTML.coverage" NAME="Write_HTML Coverage Results" MODIFIED="1532293105838" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -34,8 +36,8 @@
       <file leaf-file-name="pessl.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pessl.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2941">
-              <caret line="238" column="25" selection-start-line="238" selection-start-column="25" selection-end-line="238" selection-end-column="25" />
+            <state relative-caret-position="400">
+              <caret line="213" column="86" selection-start-line="213" selection-start-column="86" selection-end-line="213" selection-end-column="86" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
                 <element signature="e#533#1324#0" />
@@ -50,8 +52,7 @@
                 <element signature="e#4253#4429#0" />
                 <element signature="e#4366#4410#0" />
                 <element signature="e#4638#4687#0" />
-                <element signature="e#4835#5172#0" />
-                <element signature="e#4908#4925#0" />
+                <element signature="e#4835#5149#0" />
                 <element signature="e#5204#5416#0" />
                 <element signature="e#6293#6385#0" />
                 <element signature="e#6607#6657#0" />
@@ -60,11 +61,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="556">
-              <caret line="46" column="40" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
+            <state relative-caret-position="829">
+              <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
               <folding>
                 <element signature="e#500#512#0" expanded="true" />
               </folding>
@@ -76,7 +77,7 @@
         <entry file="file://$PROJECT_DIR$/irrigator_manager.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="340">
-              <caret line="20" column="16" lean-forward="true" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+              <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
               <folding>
                 <element signature="e#77#108#0" expanded="true" />
               </folding>
@@ -87,8 +88,20 @@
       <file leaf-file-name="Write_HTML.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Write_HTML.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="658">
-              <caret line="250" column="21" selection-start-line="250" selection-start-column="21" selection-end-line="250" selection-end-column="21" />
+            <state relative-caret-position="372">
+              <caret line="159" column="32" selection-start-line="159" selection-start-column="32" selection-end-line="159" selection-end-column="32" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database_handler.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/database_handler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="459">
+              <caret line="27" column="14" lean-forward="true" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -105,11 +118,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="errorchecks.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="errorchecks.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/errorchecks.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+            <state relative-caret-position="370">
+              <caret line="169" column="5" lean-forward="true" selection-start-line="169" selection-start-column="5" selection-end-line="169" selection-end-column="5" />
               <folding>
                 <element signature="e#1389#3173#0" />
                 <element signature="e#3231#3695#0" />
@@ -121,8 +134,8 @@
       <file leaf-file-name="emailer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/emailer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="901">
-              <caret line="57" column="7" selection-start-line="57" selection-start-column="7" selection-end-line="57" selection-end-column="7" />
+            <state relative-caret-position="340">
+              <caret line="20" column="60" selection-start-line="20" selection-start-column="60" selection-end-line="20" selection-end-column="60" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -155,13 +168,14 @@
         <option value="$PROJECT_DIR$/api.py" />
         <option value="$PROJECT_DIR$/weatherman.py" />
         <option value="$PROJECT_DIR$/data_checks.py" />
-        <option value="$PROJECT_DIR$/pessl.py" />
         <option value="$PROJECT_DIR$/jimhickey.py" />
-        <option value="$PROJECT_DIR$/emailer.py" />
-        <option value="$PROJECT_DIR$/errorchecks.py" />
         <option value="$PROJECT_DIR$/irrigator_manager.py" />
+        <option value="$PROJECT_DIR$/emailer.py" />
         <option value="$PROJECT_DIR$/Write_HTML.py" />
+        <option value="$PROJECT_DIR$/database_handler.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/pessl.py" />
+        <option value="$PROJECT_DIR$/errorchecks.py" />
       </list>
     </option>
   </component>
@@ -349,20 +363,21 @@
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50989586" side_tool="true" visible="true" weight="0.21360256" />
-      <window_info anchor="right" x="0" y="0" width="434" height="856" id="Documentation" sideWeight="0.50135136" side_tool="true" visible="true" weight="0.3296875" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.0734375" side_tool="true" visible="true" weight="0.37513283" />
+      <window_info anchor="right" x="0" y="0" width="434" height="856" id="Documentation" sideWeight="0.50088495" side_tool="true" visible="true" weight="0.18125" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" sideWeight="0.49947917" weight="0.32943678" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49010417" visible="true" weight="0.21360256" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.9265625" visible="true" weight="0.37513283" />
+      <window_info anchor="right" id="Coverage" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.240625" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info active="true" anchor="right" id="SciView" order="3" sideWeight="0.49864864" visible="true" weight="0.3296875" />
+      <window_info anchor="right" id="SciView" order="3" sideWeight="0.49911505" weight="0.18125" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49791667" weight="0.3997879" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49739584" weight="0.3995749" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -380,7 +395,14 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="6" />
+      <default-breakpoints>
+        <breakpoint suspend="NONE" type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
+      <option name="time" value="8" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -402,8 +424,7 @@
             <element signature="e#4253#4429#0" />
             <element signature="e#4366#4410#0" />
             <element signature="e#4638#4687#0" />
-            <element signature="e#4835#5172#0" />
-            <element signature="e#4908#4925#0" />
+            <element signature="e#4835#5149#0" />
             <element signature="e#5204#5416#0" />
             <element signature="e#6293#6385#0" />
             <element signature="e#6607#6657#0" />
@@ -487,8 +508,7 @@
             <element signature="e#4253#4429#0" />
             <element signature="e#4366#4410#0" />
             <element signature="e#4638#4687#0" />
-            <element signature="e#4835#5172#0" />
-            <element signature="e#4908#4925#0" />
+            <element signature="e#4835#5149#0" />
             <element signature="e#5204#5416#0" />
             <element signature="e#6293#6385#0" />
             <element signature="e#6607#6657#0" />
@@ -575,8 +595,7 @@
             <element signature="e#4253#4429#0" />
             <element signature="e#4366#4410#0" />
             <element signature="e#4638#4687#0" />
-            <element signature="e#4835#5172#0" />
-            <element signature="e#4908#4925#0" />
+            <element signature="e#4835#5149#0" />
             <element signature="e#5204#5416#0" />
             <element signature="e#6293#6385#0" />
             <element signature="e#6607#6657#0" />
@@ -653,8 +672,7 @@
             <element signature="e#4253#4429#0" />
             <element signature="e#4366#4410#0" />
             <element signature="e#4638#4687#0" />
-            <element signature="e#4835#5172#0" />
-            <element signature="e#4908#4925#0" />
+            <element signature="e#4835#5149#0" />
             <element signature="e#5204#5416#0" />
             <element signature="e#6293#6385#0" />
             <element signature="e#6607#6657#0" />
@@ -730,8 +748,7 @@
             <element signature="e#4253#4429#0" />
             <element signature="e#4366#4410#0" />
             <element signature="e#4638#4687#0" />
-            <element signature="e#4835#5172#0" />
-            <element signature="e#4908#4925#0" />
+            <element signature="e#4835#5149#0" />
             <element signature="e#5204#5416#0" />
             <element signature="e#6293#6385#0" />
             <element signature="e#6607#6657#0" />
@@ -798,8 +815,7 @@
             <element signature="e#4253#4429#0" />
             <element signature="e#4366#4410#0" />
             <element signature="e#4638#4687#0" />
-            <element signature="e#4835#5172#0" />
-            <element signature="e#4908#4925#0" />
+            <element signature="e#4835#5149#0" />
             <element signature="e#5204#5416#0" />
             <element signature="e#6293#6385#0" />
             <element signature="e#6607#6657#0" />
@@ -853,10 +869,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/new_pessl.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="5" lean-forward="true" selection-start-line="16" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/weather.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/emailer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="60" selection-start-line="20" selection-start-column="60" selection-end-line="20" selection-end-column="60" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/jimhickey.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="658">
+          <caret line="52" column="48" selection-start-line="52" selection-start-column="48" selection-end-line="52" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database_handler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="27" column="14" lean-forward="true" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/pessl.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2941">
-          <caret line="238" column="25" selection-start-line="238" selection-start-column="25" selection-end-line="238" selection-end-column="25" />
+        <state relative-caret-position="400">
+          <caret line="213" column="86" selection-start-line="213" selection-start-column="86" selection-end-line="213" selection-end-column="86" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
             <element signature="e#533#1324#0" />
@@ -871,8 +927,7 @@
             <element signature="e#4253#4429#0" />
             <element signature="e#4366#4410#0" />
             <element signature="e#4638#4687#0" />
-            <element signature="e#4835#5172#0" />
-            <element signature="e#4908#4925#0" />
+            <element signature="e#4835#5149#0" />
             <element signature="e#5204#5416#0" />
             <element signature="e#6293#6385#0" />
             <element signature="e#6607#6657#0" />
@@ -880,70 +935,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/emailer.py">
+    <entry file="file://$PROJECT_DIR$/Write_HTML.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
-          <caret line="57" column="7" selection-start-line="57" selection-start-column="7" selection-end-line="57" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/new_pessl.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="5" lean-forward="true" selection-start-line="16" selection-end-line="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/weather.csv">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/jimhickey.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="658">
-          <caret line="52" column="48" selection-start-line="52" selection-start-column="48" selection-end-line="52" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/errorchecks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
-          <folding>
-            <element signature="e#1389#3173#0" />
-            <element signature="e#3231#3695#0" />
-          </folding>
+        <state relative-caret-position="372">
+          <caret line="159" column="32" selection-start-line="159" selection-start-column="32" selection-end-line="159" selection-end-column="32" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/irrigator_manager.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
-          <caret line="20" column="16" lean-forward="true" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
+          <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
           <folding>
             <element signature="e#77#108#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Write_HTML.py">
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="658">
-          <caret line="250" column="21" selection-start-line="250" selection-start-column="21" selection-end-line="250" selection-end-column="21" />
+        <state relative-caret-position="829">
+          <caret line="53" lean-forward="true" selection-start-line="53" selection-end-line="53" />
+          <folding>
+            <element signature="e#500#512#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/errorchecks.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="556">
-          <caret line="46" column="40" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
+        <state relative-caret-position="370">
+          <caret line="169" column="5" lean-forward="true" selection-start-line="169" selection-start-column="5" selection-end-line="169" selection-end-column="5" />
           <folding>
-            <element signature="e#500#512#0" expanded="true" />
+            <element signature="e#1389#3173#0" />
+            <element signature="e#3231#3695#0" />
           </folding>
         </state>
       </provider>

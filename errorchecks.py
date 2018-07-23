@@ -1,6 +1,37 @@
 """Module handles error checking of the station"""
 
 """These numbers need to be found automatically by looking at the column headers"""
+solar_radiation = {"avg": []}
+solar_panel = {"last": []}
+precipitation = {"sum": []}
+wind_speed = {"avg": [], "max": []}
+battery = {"last": []}
+leaf_wetness = {"time": []}
+hc_serial_number = {"last": []}
+hc_air_temperature = {"avg": [], "max": [], "min": []}
+hc_relative_humidity = {"avg": [], "max": [], "min": []}
+dew_point = {"avg": [], "min": []}
+latitude = {"last": []}
+longitude = {"last": []}
+altitude = {"last": []}
+horizontal_dilusion_of_position = {"last": []}
+vpd = {"avg": [], "min": []}
+wind_speed_max = {"max": []}
+eag_soil_moisture = {"avg": []}
+eag_soil_salinity = {"avg": []}
+soil_temperature = {"avg": [], "max": [], "min": []}
+
+
+
+PESSL_COLUMNS_INDEX = {"Solar radiation": solar_radiation, "Solar Panel": solar_panel, "Precipitation": precipitation,
+                       "Wind speed": wind_speed, "Battery": battery, "Leaf Wetness": leaf_wetness,
+                       "HC Serial Number": hc_serial_number, "HC Air temperature": hc_air_temperature,
+                       "HC Relative humidity": hc_relative_humidity, "Dew Point": dew_point, "Latitude": latitude,
+                       "Longitude": longitude, "Altitude": altitude,
+                       "Horizontal dilusion of position": horizontal_dilusion_of_position, "VPD": vpd,
+                       "Wind speed max": wind_speed_max, "EAG Soil moisture": eag_soil_moisture,
+                       "Eag soil salinity": eag_soil_salinity, "Soil temperature": soil_temperature}
+
 TIME_COL = 0
 WIND_COL = 4
 MAXWIND_COL = 5
@@ -34,7 +65,6 @@ def get_max_data(data):
         if(max_dict['value'] < value):
             max_dict['value'] = value
             max_dict['hour'] = count
-
         count += 1
 
     return max_dict
@@ -114,19 +144,34 @@ def error_checker(data):
     errors = {'Connection': False, 'Battery': False, 'Solar': False, 'Rain': False, 'Leaf Wetness': False,
               'Temp': False, 'GPS': False, 'Wind': False}
 
-    time_data = get_data(data, TIME_COL)
-    wind_data = get_data(data, WIND_COL)
-    maxwind_data = get_data(data, MAXWIND_COL)
-    rain_data = get_data(data, RAIN_COL)
-    leafwet_data = get_data(data, LEAFWET_COL)
-    solar_data = get_data(data, SOLAR_COL)
-    pv_data = get_data(data, PV_COL)
-    hum_data = get_data(data, HUM_COL)
+    names = data[0] # First row of data has the names
+    other_names = data[1]
 
-    maxwind_dict = get_max_data(maxwind_data)
+    i = 0
+    for value in names:
+        if value in PESSL_COLUMNS_INDEX:
+            for key in PESSL_COLUMNS_INDEX[value]:
+                PESSL_COLUMNS_INDEX[value][key] = i
+                i += 1
+            i -= 1
+        i += 1
 
-    check_rain_data(rain_data, maxwind_dict, leafwet_data, errors)
+    print(PESSL_COLUMNS_INDEX)
 
-    check_solar_panel(solar_data, pv_data, errors)
+
+    # time_data = get_data(data, PESSL_COLUMNS_INDEX[])
+    # wind_data = get_data(data, WIND_COL)
+    # maxwind_data = get_data(data, MAXWIND_COL)
+    # rain_data = get_data(data, RAIN_COL)
+    # leafwet_data = get_data(data, LEAFWET_COL)
+    # solar_data = get_data(data, SOLAR_COL)
+    # pv_data = get_data(data, PV_COL)
+    # hum_data = get_data(data, HUM_COL)
+    #
+    # maxwind_dict = get_max_data(maxwind_data)
+    #
+    # check_rain_data(rain_data, maxwind_dict, leafwet_data, errors)
+    #
+    # # check_solar_panel(solar_data, pv_data, errors)
 
     return errors
