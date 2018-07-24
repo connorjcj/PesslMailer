@@ -32,21 +32,44 @@ if __name__ == "__main__":
     # First, pull customer data - givs a dictionary of lists
     customer_info = database_handler.data_reader(customer_name)
 
-    pessl_mat = pessl.pessl_data_handler(customer_info)
+    # This returns a dictionary with station IDs as keys and the values as the data dictionaries
+    pessl_data_dict = pessl.pessl_data_handler(customer_info, "all")
 
-    print(pessl_mat)
+    print("PESSL DATA")
+    print(pessl_data_dict)
 
-    errors = errorchecks.error_checker(pessl_mat)
+    errors = {}
+
+    for key in pessl_data_dict:
+        (errors[key], pessl_columns_index) = errorchecks.error_checker(pessl_data_dict[key])
+
+    print("ERRORS")
+    print(errors)
+
+    print("COLUMN INDEX")
+    print(pessl_columns_index)
+
     # # weather_mat = jimhickey.get_weather()
     #
     #
     # # if len(errors) == 1:
     # #     message = "No errors detected"
     # # else:
+    # # else:
     # #     for error in errors:
     # #         message = message + '{} \n'.format(error)
     #
-    # irrigator_manager.grapher(errorchecks.get_data(pessl_mat, SOIL_1))
+
+    soil_moisture_data = []
+
+    for key in pessl_data_dict:
+        i = 0
+        for row in pessl_data_dict[key]:
+            if i >= 2:
+                soil_moisture_data.insert(0, row[pessl_columns_index["EAG Soil moisture"]["avg1"]])
+            i += 1
+
+        irrigator_manager.grapher(soil_moisture_data)
     #
     # html = Write_HTML.send_email(errors)
     #

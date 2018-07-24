@@ -1,29 +1,32 @@
 """Module handles error checking of the station"""
 
 """These numbers need to be found automatically by looking at the column headers"""
-solar_radiation = {"avg": []}
-solar_panel = {"last": []}
-precipitation = {"sum": []}
-wind_speed = {"avg": [], "max": []}
-battery = {"last": []}
-leaf_wetness = {"time": []}
-hc_serial_number = {"last": []}
-hc_air_temperature = {"avg": [], "max": [], "min": []}
-hc_relative_humidity = {"avg": [], "max": [], "min": []}
-dew_point = {"avg": [], "min": []}
-latitude = {"last": []}
-longitude = {"last": []}
-altitude = {"last": []}
-horizontal_dilusion_of_position = {"last": []}
-vpd = {"avg": [], "min": []}
-wind_speed_max = {"max": []}
-eag_soil_moisture = {"avg": []}
-eag_soil_salinity = {"avg": []}
-soil_temperature = {"avg": [], "max": [], "min": []}
+date_time = 0
+solar_radiation = {"avg": None}
+solar_panel = {"last": None}
+precipitation = {"sum": None}
+wind_speed = {"avg": None, "max": None}
+battery = {"last": None}
+leaf_wetness = {"time": None}
+hc_serial_number = {"last": None}
+hc_air_temperature = {"avg": None, "max": None, "min": None}
+hc_relative_humidity = {"avg": None, "max": None, "min": None}
+dew_point = {"avg": None, "min": None}
+latitude = {"last": None}
+longitude = {"last": None}
+altitude = {"last": None}
+horizontal_dilusion_of_position = {"last": None}
+vpd = {"avg": [], "min": None}
+wind_speed_max = {"max": None}
+eag_soil_moisture = {"avg1": None, "avg2": None, "avg3": None, "avg4": None, "avg5": None, "avg6": None}
+eag_soil_salinity = {"avg1": None, "avg2": None, "avg3": None, "avg4": None, "avg5": None, "avg6": None}
+soil_temperature = {"avg1": None, "max1": None, "min1": None, "avg2": None, "max2": None, "min2": None,
+                    "avg3": None, "max3": None, "min3": None, "avg4": None, "max4": None, "min4": None,
+                    "avg5": None, "max5": None, "min5": None, "avg6": None, "max6": None, "min6": None}
 
 
 
-PESSL_COLUMNS_INDEX = {"Solar radiation": solar_radiation, "Solar Panel": solar_panel, "Precipitation": precipitation,
+pessl_columns_index = {"Date/Time": date_time, "Solar radiation": solar_radiation, "Solar Panel": solar_panel, "Precipitation": precipitation,
                        "Wind speed": wind_speed, "Battery": battery, "Leaf Wetness": leaf_wetness,
                        "HC Serial Number": hc_serial_number, "HC Air temperature": hc_air_temperature,
                        "HC Relative humidity": hc_relative_humidity, "Dew Point": dew_point, "Latitude": latitude,
@@ -32,17 +35,9 @@ PESSL_COLUMNS_INDEX = {"Solar radiation": solar_radiation, "Solar Panel": solar_
                        "Wind speed max": wind_speed_max, "EAG Soil moisture": eag_soil_moisture,
                        "Eag soil salinity": eag_soil_salinity, "Soil temperature": soil_temperature}
 
-TIME_COL = 0
-WIND_COL = 4
-MAXWIND_COL = 5
-RAIN_COL = 3
-LEAFWET_COL = 7
-SOLAR_COL = 1
-PV_COL = 2
-HUM_COL = 12
-
 MAX_WIND_THRESH = 25 # kmh
-
+BATTERY_THRESHOLD = 6050 #mV
+########################################################################################################################
 def get_data(data, col_number):
     new_data = []
 
@@ -56,18 +51,35 @@ def get_data(data, col_number):
 
     return new_data
 
+def get_min_data(data):
+    min = None
+
+    if data is not None:
+        count = 0
+        for value in data:
+            if count == 0:
+                min = value
+            elif min > value:
+                min = value
+
+    return min
+
 def get_max_data(data):
     """Gives the max value from a set and the corresponding index number in dictionary format"""
     max_dict = {'value': 0, 'hour': 0}
 
-    count = 0
-    for value in data:
-        if(max_dict['value'] < value):
-            max_dict['value'] = value
-            max_dict['hour'] = count
-        count += 1
+    if data is not None:
+        count = 0
+        for value in data:
+            if(max_dict['value'] < value):
+                max_dict['value'] = value
+                max_dict['hour'] = count
+            count += 1
+    else:
+        max_dict = None
 
     return max_dict
+
 
 def check_wind_data(wind_data, errors):
     """Checks the wind data to see if there is an extended period of zero values. This would indicate that the wind
@@ -80,31 +92,60 @@ def check_wind_data(wind_data, errors):
         errors['Wind'] = True
 
 
-def check_rain_data(rain_data, wind_max, leafwet_data, errors):
+def check_rain_data(rain_data, wind_max, leafwet_data, hum_data, errors):
     """Checks the rain data for oddities, helps if leaf wetness data is available"""
     #if rain_data and no leaf_wetness - alert me to check, bird tampering or wind, or leaf wetness needs replacing
     #could probably just average over the past day - 24 data points
 
     rain_sum = sum(rain_data)
-    leafwet_sum = sum(leafwet_data)
+    rain_max = get_max_data(rain_data)
 
-    if(rain_sum > 1): # If the station thinks there has been rain
-        if(leafwet_sum < 1): # If the leaves were not wet - wind tipped bucket or paper perished
-            if(wind_max['value'] > MAX_WIND_THRESH): # Then the bucket was probably tipped by the wind
-                rain_max = get_max_data(rain_data)
+    leafwet_agree = True
+    wind_agree = True
+    hum_agree = True
 
-                if((wind_max['hour'] - 1) < rain_max['hour'] and rain_max['hour'] < (wind_max['hour'] + 1)):
-                    errors['Rain'] = True
-                else: # The time in which the high winds occurred did not correspond with the recorded rain
-                    errors['Rain'] = True # But not sure what error is
 
-            else: # No high winds were recorded, so must be the leaf wetness sensor
-                errors['Leaf Wetness'] = True
+    if leafwet_data is not None:
+        leafwet_sum = sum(leafwet_data)
+    else:
+        leafwet_sum = None
+
+    if(rain_sum > 0.8): # If the station thinks there has been rain
+        if(leafwet_data is not None):
+            if(leafwet_sum < 1): # If the leaves were not wet - wind tipped bucket or paper perished
+                leafwet_agree = False
+            else:
+                leafwet_agree = True
+
+        if(wind_max is not None):
+            if(wind_max["value"] > MAX_WIND_THRESH): # Then the bucket was probably tipped by the wind
+                if((wind_max["hour"] - 1) < rain_max["hour"] and rain_max["hour"] < (wind_max["hour"] + 1)):
+                    wind_agree = False
+                else:
+                    wind_agree = True
+
+            else:
+                wind_agree = True
+
+        if(hum_data is not None):
+            if(hum_data[rain_max["hour"]] > 80):
+                hum_agree = True
+
+        if(hum_agree is False):
+            if(wind_agree is False):
+                errors["Rain"] = True # And we know that bucket is being tipped
+            else:
+                errors["Rain"] = True # Still an error but unclear why
+        elif(leafwet_agree is False and wind_agree is True): # so, the leafwetness didn't think there was rain, but humidity was sufficient and there was no wind
+            errors["Leaf Wetness"] = True
+        else:
+            errors["rain"] = False
 
     else: # If the station thinks there hasn't been rain
-        if(leafwet_sum > 1): # The leaves are wet - rain bucket could be blocked or maybe it was just dewy? Would need
-                             # to compare against the forecast or another nearby station
-            errors['Rain'] = True
+        if leafwet_sum is not None:
+            if(leafwet_sum > 1): # The leaves are wet - rain bucket could be blocked or maybe it was just dewy? Would need
+                                 # to compare against the forecast or another nearby station
+                errors['Rain'] = True # Blocked
 
 
     # if (rain_total > 1): # If significant rainfall occurred, > 1mm
@@ -131,12 +172,18 @@ def check_solar_panel(solar_data, pv_data, errors):
     solar_factor = solar_sum/solar_max
     pv_factor = pv_sum/pv_max
 
-    print(solar_factor)
-    print(pv_factor)
-
     if(pv_factor < (1 - threshold) * pv_factor):
         errors['Solar'] = True
 
+def check_wind_sensor(wind_data, errors):
+    if(sum(wind_data) < 1): # Wind has been very low
+        errors["Wind"] = True
+
+def check_battery(battery_data, errors):
+    min = get_min_data(battery_data)
+
+    if(min < BATTERY_THRESHOLD):
+        errors["Battery"] = True
 
 def error_checker(data):
     """Main function, takes a matrix of weather station data for the past 24hrs and does the corresponding error checks,
@@ -147,31 +194,61 @@ def error_checker(data):
     names = data[0] # First row of data has the names
     other_names = data[1]
 
+    # Could probably create this dictionary from scratch, like the customer database?
     i = 0
+    last_value = None
+
     for value in names:
-        if value in PESSL_COLUMNS_INDEX:
-            for key in PESSL_COLUMNS_INDEX[value]:
-                PESSL_COLUMNS_INDEX[value][key] = i
-                i += 1
-            i -= 1
+        if value in pessl_columns_index and value != last_value:
+            i2 = 0
+            for key in pessl_columns_index[value]:
+                pessl_columns_index[value][key] = i + i2
+                i2 += 1
+            last_value = value
         i += 1
 
-    print(PESSL_COLUMNS_INDEX)
+    if(pessl_columns_index["Date/Time"] is not None):
+        time_data = get_data(data, pessl_columns_index["Date/Time"])
+    else:
+        time_data = None
+    if(pessl_columns_index["Wind speed max"]["max"] is not None):
+        wind_data = get_data(data, pessl_columns_index["Wind speed max"]["max"])
+    else:
+        wind_data = None
+    if(pessl_columns_index["Precipitation"]["sum"] is not None):
+        rain_data = get_data(data, pessl_columns_index["Precipitation"]["sum"])
+    else:
+        rain_data = None
+    if(pessl_columns_index["Leaf Wetness"]["time"] is not None):
+        leafwet_data = get_data(data, pessl_columns_index["Leaf Wetness"]["time"])
+    else:
+        leafwet_data = None
+    if(pessl_columns_index["Solar radiation"]["avg"] is not None):
+        solar_data = get_data(data, pessl_columns_index["Solar radiation"]["avg"])
+    else:
+        solar_data = None
+    if(pessl_columns_index["Solar Panel"]["last"] is not None):
+        pv_data = get_data(data, pessl_columns_index["Solar Panel"]["last"])
+    else:
+        pv_data = None
+    if(pessl_columns_index["HC Relative humidity"]["avg"] is not None):
+        hum_data = get_data(data, pessl_columns_index["HC Relative humidity"]["avg"])
+    else:
+        hum_data = None
 
+    battery_data = get_data(data, pessl_columns_index["Battery"]["last"])
 
-    # time_data = get_data(data, PESSL_COLUMNS_INDEX[])
-    # wind_data = get_data(data, WIND_COL)
-    # maxwind_data = get_data(data, MAXWIND_COL)
-    # rain_data = get_data(data, RAIN_COL)
-    # leafwet_data = get_data(data, LEAFWET_COL)
-    # solar_data = get_data(data, SOLAR_COL)
-    # pv_data = get_data(data, PV_COL)
-    # hum_data = get_data(data, HUM_COL)
-    #
-    # maxwind_dict = get_max_data(maxwind_data)
-    #
-    # check_rain_data(rain_data, maxwind_dict, leafwet_data, errors)
-    #
-    # # check_solar_panel(solar_data, pv_data, errors)
+    maxwind_dict = get_max_data(wind_data)
 
-    return errors
+    if rain_data is not None and (maxwind_dict is not None or leafwet_data is not None or hum_data is not None):
+        check_rain_data(rain_data, maxwind_dict, leafwet_data, hum_data, errors)
+
+    if solar_data is not None and pv_data is not None:
+        check_solar_panel(solar_data, pv_data, errors)
+
+    if wind_data is not None:
+        check_wind_sensor(wind_data, errors)
+
+    check_battery(battery_data, errors)
+
+    return errors, pessl_columns_index

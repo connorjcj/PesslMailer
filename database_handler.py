@@ -20,6 +20,7 @@ def data_reader(customer_name):
             customer_info = [[] for _ in range(len(row))]
             for value in row:
                 keys.append(value)
+
         elif row[0] == customer_name:
             k = 0
             for value in row:
@@ -27,11 +28,7 @@ def data_reader(customer_name):
                 k += 1
         i += 1
 
-    print(customer_info)
-
     info = dict(zip(keys, customer_info))
     file.close()
-
-    print(info)
 
     return(info)
