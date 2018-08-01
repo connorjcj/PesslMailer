@@ -1,2 +1,0 @@
-﻿customer_name,email_address,subscription_end,station_id,station_type,gps_lat,gps_lon,connection,battery,solar_panel,rain_bucket,leaf_wetness,temperature,location,eto,forecast,probe_1_relv_depth,probe_1_sat,soil_moisture_hold_cap_1,probe_2_relv_depth,probe_2_sat,soil_moisture_hold_cap_2,probe_3_relv_depth,probe_3_sat,soil_moisture_hold_cap_3,probe_4_relv_depth,probe_4_sat,soil_moisture_hold_cap_4,combine_ref
-Daniel Lovett,connor.jaine@carrfields.co.nz,1/01/2020,00204E80,IMT300,-43.975514,171.78515,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE,30,33%,150,,,,,,,,,,A

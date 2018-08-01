@@ -28,50 +28,78 @@ message = 'test test test how are ya'
 
 customer_name = 'Daniel Lovett'
 
+class Customer:
+    def __init__(self, full_name, email_address, subscription_end):
+        self.name = full_name
+        self.email = email_address
+        self.sub_end_date = subscription_end
+        self.stations = []
+
+class Station:
+    pass
+
+class Probe:
+    pass
+
+def make_dashboard(customer):
+    """Receives customer info, fetches the data, makes a dashboard and emails this to the customer"""
+    # Pull new data for each of the customers stations
+    station_list = database_handler.station_reader(customer["customer_name"])
+
+    customer["stations"] = station_list  # Link the stations to the customer, makes things easier
+
+    for station in station_list:
+        station["probe_settings"] = database_handler.probe_settings_reader(customer["customer_name"], station["station_id"])
+
+        pessl_data_dict = pessl.pessl_data_handler(customer, "all")
+
+
 if __name__ == "__main__":
-    # First, pull customer data - givs a dictionary of lists
-    customer_info = database_handler.data_reader(customer_name)
+    #  Everything a bit different now
+    # pull in customer list, iterate through each person
+    # Customer list is a list of dictionaries
+    customer_list = database_handler.customer_reader()
 
-    # This returns a dictionary with station IDs as keys and the values as the data dictionaries
-    pessl_data_dict = pessl.pessl_data_handler(customer_info, "all")
+    for customer in customer_list:
+        # Make dashboard for each customer in the list
+        make_dashboard(customer)
 
-    print("PESSL DATA")
-    print(pessl_data_dict)
-
-    errors = {}
-
-    for key in pessl_data_dict:
-        (errors[key], pessl_columns_index) = errorchecks.error_checker(pessl_data_dict[key])
-
-    print("ERRORS")
-    print(errors)
-
-    print("COLUMN INDEX")
-    print(pessl_columns_index)
-
-    # # weather_mat = jimhickey.get_weather()
+    # # First, pull customer data - givs a dictionary of lists
+    # customer_info = database_handler.data_reader(customer_name)
     #
+    # for station_id in customer_info["station_id"]:
+    #     customer_info[station_id]["probe_settings"] = database_handler.probe_settings_reader(customer_name, customer_info["station_id"][0])
     #
-    # # if len(errors) == 1:
-    # #     message = "No errors detected"
-    # # else:
-    # # else:
-    # #     for error in errors:
-    # #         message = message + '{} \n'.format(error)
+    # print(customer_info)
     #
-
-    soil_moisture_data = []
-
-    for key in pessl_data_dict:
-        i = 0
-        for row in pessl_data_dict[key]:
-            if i >= 2:
-                soil_moisture_data.insert(0, row[pessl_columns_index["EAG Soil moisture"]["avg1"]])
-            i += 1
-
-        irrigator_manager.grapher(soil_moisture_data)
+    # # This returns a dictionary with station IDs as keys and the values as the data dictionaries
+    # pessl_data_dict = pessl.pessl_data_handler(customer_info, "all")
     #
-    # html = Write_HTML.send_email(errors)
+    # print("PESSL DATA")
+    # print(pessl_data_dict)
     #
-    # emailer.sendemail(you, subject, html)
-
+    # errors = {}
+    #
+    # for key in pessl_data_dict:
+    #     (errors[key]) = errorchecks.error_checker_dict(pessl_data_dict[key])
+    #
+    # print("ERRORS")
+    # print(errors)
+    #
+    # # # weather_mat = jimhickey.get_weather()
+    # #
+    # #
+    # # # if len(errors) == 1:
+    # # #     message = "No errors detected"
+    # # # else:
+    # # # else:
+    # # #     for error in errors:
+    # # #         message = message + '{} \n'.format(error)
+    # #
+    # for key in pessl_data_dict:
+    #     irrigator_manager.graph_soil_moisture(pessl_data_dict[key], customer_info[key]["probe_settings"], key)
+    # #
+    # # html = Write_HTML.send_email(errors)
+    # #
+    # # emailer.sendemail(you, subject, html)
+    #

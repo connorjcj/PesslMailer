@@ -1,0 +1,2 @@
+station_id,station_type,gps_lat,gps_lon,connection,battery,solar_panel,rain_bucket,leaf_wetness,temperature,location,eto,forecast
+00204E80,IMT300,-43.975514,171.78515,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE

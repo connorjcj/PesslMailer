@@ -252,3 +252,46 @@ def error_checker(data):
     check_battery(battery_data, errors)
 
     return errors, pessl_columns_index
+
+def check_key(in_dict, key1, key2):
+    if key1 in in_dict:
+        if key2 in in_dict[key1]: # this should always be true
+            return in_dict[key1][key2]
+    else:
+        return None
+
+def error_checker_dict(data_dict):
+    """Same purpose as error checker but dels with the data organised in a dictionary rather than a matrix"""
+    errors = {'Connection': False, 'Battery': False, 'Solar': False, 'Rain': False, 'Leaf Wetness': False,
+              'Temp': False, 'GPS': False, 'Wind': False}
+
+    time_data = check_key(data_dict, "Date/Time", "hour")
+
+    max_wind_data = check_key(data_dict, "Wind speed", "max")
+
+    rain_data = check_key(data_dict, "Precipitation", "sum")
+
+    leafwet_data = check_key(data_dict, "Leaf Wetness", "time")
+
+    solar_data = check_key(data_dict, "Solar radiation", "avg")
+
+    pv_data = check_key(data_dict, "Solar Panel", "last")
+
+    hum_data = check_key(data_dict, "HC Relative humidity", "avg")
+
+    battery_data = check_key(data_dict, "Battery", "last")
+
+    maxwind_dict = get_max_data(max_wind_data)
+
+    if rain_data is not None and (maxwind_dict is not None or leafwet_data is not None or hum_data is not None):
+        check_rain_data(rain_data, maxwind_dict, leafwet_data, hum_data, errors)
+
+    if solar_data is not None and pv_data is not None:
+        check_solar_panel(solar_data, pv_data, errors)
+
+    if max_wind_data is not None:
+        check_wind_sensor(max_wind_data, errors)
+
+    check_battery(battery_data, errors)
+
+    return errors

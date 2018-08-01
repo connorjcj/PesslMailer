@@ -76,7 +76,7 @@ def find_last_timestamp(filename):
 
     timestamp = formatted_date.replace(tzinfo=timezone.utc).timestamp()
 
-    return timestamp
+    return timestamp, last_date
 
 def import_matrix(filename):
     ''' Reads the csv file (if one exists and is full - the existence is not checked here) and copies it into a matrix
@@ -114,37 +114,46 @@ def import_matrix(filename):
 def combine_keys(keys1, keys2):
     """Takes two lists of keys and links them together in a nested dictionary structure"""
     indices_dict = {'0': ["Date/Time", "hour"]}
-    key_dict = {"Date/Time": {"hour": []}}
+    hour_dict = {"hour": []}
+    key_dict = {"Date/Time": hour_dict}
 
     key_dict["indices"] = indices_dict
+
+    print()
+    print("KEYS")
+    print()
+    print(keys1)
+    print(keys2)
+    print()
 
     last_key = None
 
     count = 0
     repeats = 0
     for key in keys1:
-        if key != "0" and key != last_key:
-            repeats = 0
-            key_dict[key] = {}
-            key_dict[key][keys2[count]] = []
-            key_dict["indices"]["{}".format(count)] = [key, keys2[count]]
-        elif key == "0" and last_key is not None:
-            if repeats == 0:
-                key_dict[last_key][keys2[count]] = []
-                key_dict["indices"]["{}".format(count)] = [last_key, keys2[count]]
-            else:
-                new_key = "{}{}".format(last_key, (repeats + 1))
+        if count >= 1:
+            if str(key) != "0" and key != last_key:
+                repeats = 0
+                key_dict[key] = {}
+                key_dict[key][keys2[count]] = []
+                key_dict["indices"]["{}".format(count)] = [key, keys2[count]]
+            elif str(key) == "0" and last_key is not None:
+                if repeats == 0:
+                    key_dict[last_key][keys2[count]] = []
+                    key_dict["indices"]["{}".format(count)] = [last_key, keys2[count]]
+                else:
+                    new_key = "{}{}".format(last_key, (repeats + 1))
+                    key_dict[new_key][keys2[count]] = []
+                    key_dict["indices"]["{}".format(count)] = [new_key, keys2[count]]
+            elif key == last_key: #soil moisture probes
+                repeats += 1
+                new_key = "{}{}".format(key, (repeats+1))
+                key_dict[new_key] = {}
                 key_dict[new_key][keys2[count]] = []
                 key_dict["indices"]["{}".format(count)] = [new_key, keys2[count]]
-        elif key == last_key: #soil moisture probes
-            repeats += 1
-            new_key = "{}{}".format(key, (repeats+1))
-            key_dict[new_key] = {}
-            key_dict[new_key][keys2[count]] = []
-            key_dict["indices"]["{}".format(count)] = [new_key, keys2[count]]
 
-        if key != "0":
-            last_key = key
+            if str(key) != "0":
+                last_key = key
         count += 1
 
     return key_dict
@@ -169,15 +178,11 @@ def create_dictionary(matrix):
         elif i == 1:
             keys2 = row
             pessl_dict = combine_keys(keys1, keys2)
-
         i += 1
-
-    for key in pessl_dict:
-        print("{}: {}".format(key, pessl_dict[key]))
 
     return pessl_dict
 
-def create_matrix(sensor_data, dates):
+def create_matrix(sensor_data, dates, et_data=None):
     """If no matrix exists, create one from the data that has just been read from fieldclimate"""
     n = 1  # col count, stats at 1 to account for dates col
 
@@ -214,6 +219,18 @@ def create_matrix(sensor_data, dates):
                 i += 1
             j += 1
 
+    if et_data is not None:
+        i = 0
+        for row in matrix:
+            if i >= 2:
+                row.append(et_data["ETo[mm]"][i-2])
+            elif i == 0:
+                row.append("ETo[mm]")
+            elif i == 1:
+                row.append("daily")
+            i += 1
+
+
     return matrix
 
 def append_to_matrix(old_matrix, new_matrix):
@@ -227,18 +244,27 @@ def append_to_matrix(old_matrix, new_matrix):
 
     return final_matrix
 
-def get_data(id, last_date = 0):
-    """Gets the data from fieldclimate using the API returns a response in json form"""
-    readData = '/data/optimized/{}/hourly/from/'.format(id) + str(last_date)
-
-    # Service/Route that you wish to call
-    apiRoute = readData
-
+def api_call(apiRoute):
+    """Calls the fieldclimate API"""
     auth = AuthHmacMetosGet(apiRoute, publicKey, privateKey)
-
-    response = requests.get(apiURI+apiRoute, headers={'Accept': 'application/json'}, auth=auth)
-
+    response = requests.get(apiURI + apiRoute, headers={'Accept': 'application/json'}, auth=auth)
     return response
+
+def get_dates(id):
+    """Checks the fieldclimate data, returns the date of the last datapoint"""
+    dates = "/data/{}".format(id)
+    return api_call(dates)
+
+def get_data(id):
+    """Gets the data from fieldclimate using the API returns a response in json form"""
+    dates = get_dates(id).json()
+    read_data = '/data/optimized/{}/hourly/last/1m'.format(id)
+    return api_call(read_data)
+
+def get_et(id, last_date = 0):
+    """Gets the Evapotranspiration data from fieldclimate using the API returns a response in json form"""
+    read_data = '/disease/{}/last/5w'.format(id)
+    return api_call(read_data)
 
 def write_to_csv(matrix, filename):
 
@@ -251,34 +277,124 @@ def write_to_csv(matrix, filename):
 
     file.close()
 
+def check_dates(date1, date2):
+    if date1 == date2:
+        return False
+    else:
+        return True
+
+def format_et_data(et_data, dates):
+    """Comes in a really niggly form, list of dicts like so [{'date': '2018-06-07 23:00:00', 'ETo[mm]': 0.6}, ...
+       need to drag data out over the entire day too so that it matches up with soil moisture data
+       The timestamp is the time that the last piece of weather station data was collected"""
+    et_dict = {"dates": [], "ETo[mm]": []}
+
+    for item in et_data:
+        et_dict["dates"].append(item["date"])
+        et_dict["ETo[mm]"].append(item["ETo[mm]"])
+
+    new_et_dict = {"dates": [], "ETo[mm]": []}
+
+    reverse_dates = dates[::-1]  # Reverses the dates list
+    last_date = dates[0]
+    total_days = len(et_dict["dates"])
+    day = 1
+    for date in reverse_dates:
+        if et_dict["dates"][-day] == date:  # New day
+            new_et_dict["dates"].append(date)
+            new_et_dict["ETo[mm]"].append(et_dict["ETo[mm]"][-day])
+            day += 1
+        elif date < et_dict["dates"][0]:
+            new_et_dict["dates"].append(date)
+            new_et_dict["ETo[mm]"].append(0)
+        else:
+            new_et_dict["dates"].append(date)
+            new_et_dict["ETo[mm]"].append(et_dict["ETo[mm]"][-day])
+
+    return new_et_dict
+
+
 ########################################################################################################################
 def pessl_data_handler(customer_info, time_period='day'):
+    """Just gets all data fresh from fieldclimate"""
     station_data_dict = {}
+    data_up_to_date = False
 
     for id in customer_info["station_id"]:
-        filename = "{}_{}.csv".format(customer_info['customer_name'][0], id)
+        filename = "{0}/{0}_{1}.csv".format(customer_info['customer_name'][0], id)
 
-        data_up_to_date = False
+        response_main = get_data(id)
+        response_et = get_et(id)
 
+        data_parsed = response_main.json()     # Turns JSON object into a python dictionary of dictionaries
+        et_data_parsed = response_et.json()
+        sensor_data = data_parsed['data'] # Isolates the dictionary containing sensor data
+        dates = data_parsed['dates']      # Isolates the dictionary containing the timestaps for each data point in data
+        et_data = format_et_data(et_data_parsed, dates)
+
+        matrix = create_matrix(sensor_data, dates, et_data)
+
+        write_to_csv(matrix, filename)
+
+        if(time_period == "day"):
+            day_matrix = [[0 for x in range(len(matrix[0]))] for y in range(26)]
+            i = 0
+            while(i < 26):
+                day_matrix[i] = matrix[i]
+                i += 1
+            pessl_dict = create_dictionary(day_matrix)
+
+        elif(time_period == "all"):
+            pessl_dict = create_dictionary(matrix)
+
+        station_data_dict["{}".format(id)] = pessl_dict
+
+    return station_data_dict
+
+########################################################################################################################
+def old_pessl_data_handler(customer_info, time_period='day'):
+    station_data_dict = {}
+    data_up_to_date = False
+
+    for id in customer_info["station_id"]:
+        filename = "{0}/{0}_{1}.csv".format(customer_info['customer_name'][0], id)
         file_exists = os.path.isfile(filename)
 
         if file_exists:
-            timestamp = find_last_timestamp(filename)
-            response = get_data(id, timestamp)
+            (timestamp, last_date) = find_last_timestamp(filename)
+            pessl_timestamp = check_fieldclimate(id)
+            date_range_dict = pessl_timestamp.json()  # want to check if the max_date and timestamp are equivilent
+            data_up_to_date = check_dates(max_date, date_range_dict['max_date'])
+
+            print(last_date, pessl_timestamp.json())
+
+            response_main = get_data(id, timestamp)
+            response_et = get_et(id, timestamp)
         else:
-            response = get_data(id)
+            response_main = get_data(id)
+            response_et = get_et(id)
 
         try:
-            data_parsed = response.json()     # Turns JSON object into a python dictionary of dictionaries
+            data_parsed = response_main.json()     # Turns JSON object into a python dictionary of dictionaries
         except json.decoder.JSONDecodeError:
             # No new data to be got =- is this strictly true? could check the response instead
             print('Data up to date')
             data_up_to_date = True
 
+        try:
+            et_data_parsed = response_et.json()
+        except json.decoder.JSONDecodeError:
+            print('Data up to date')
+
         if(data_up_to_date is False):
+            print(data_parsed)
             sensor_data = data_parsed['data'] # Isolates the dictionary containing sensor data
             dates = data_parsed['dates']      # Isolates the dictionary containing the timestaps for each data point in data
-            new_matrix = create_matrix(sensor_data, dates)
+            unformatted_et_data = et_data_parsed["ETo[mm]"]
+
+            et_data = format_et_data(et_data, dates)
+
+            new_matrix = create_matrix(sensor_data, et_data, dates)
 
             if file_exists:
                 old_matrix = import_matrix(filename)
@@ -289,8 +405,6 @@ def pessl_data_handler(customer_info, time_period='day'):
             matrix = import_matrix(filename)
 
         write_to_csv(matrix, filename)
-
-
 
         if(time_period == "day"):
             day_matrix = [[0 for x in range(len(matrix[0]))] for y in range(26)]
