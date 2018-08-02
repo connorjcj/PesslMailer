@@ -14,51 +14,34 @@ import emailer
 import irrigator_manager
 import Write_HTML
 import database_handler
-
-SOIL_1 = 24
-SOIL_2 = 25
-
-me = 'carrfieldstechnology@gmail.com'
-login = 'carrfieldstechnology@gmail.com'
-password = 'Winter12@'
-
-you = 'connor.jaine@carrfields.co.nz'
-subject = 'Pessl Mail'
-message = 'test test test how are ya'
-
-customer_name = 'Daniel Lovett'
-
-class Customer:
-    def __init__(self, full_name, email_address, subscription_end):
-        self.name = full_name
-        self.email = email_address
-        self.sub_end_date = subscription_end
-        self.stations = []
-
-class Station:
-    pass
-
-class Probe:
-    pass
+import objects
+from objects import Customer
+from objects import Station
+from objects import Probe
 
 def make_dashboard(customer):
     """Receives customer info, fetches the data, makes a dashboard and emails this to the customer"""
     # Pull new data for each of the customers stations
-    station_list = database_handler.station_reader(customer["customer_name"])
-
-    customer["stations"] = station_list  # Link the stations to the customer, makes things easier
+    station_list = database_handler.station_reader_oo(customer.name)
 
     for station in station_list:
-        station["probe_settings"] = database_handler.probe_settings_reader(customer["customer_name"], station["station_id"])
+        customer.stations.append(station)  # Link the stations to the customer, makes things easier
 
-        pessl_data_dict = pessl.pessl_data_handler(customer, "all")
+    for station in customer.stations:
+        probes = database_handler.probe_settings_reader_oo(customer.name, station.id)
+        for probe in probes:
+            station.probes.append(probe)
+
+        pessl.pessl_data_handler_oo(customer, "all")  # Attaches data in dict form to the station
+
+        print(station.data)
 
 
 if __name__ == "__main__":
     #  Everything a bit different now
     # pull in customer list, iterate through each person
-    # Customer list is a list of dictionaries
-    customer_list = database_handler.customer_reader()
+    # Customer list is a list of customer objects
+    customer_list = database_handler.customer_reader_oo()
 
     for customer in customer_list:
         # Make dashboard for each customer in the list
